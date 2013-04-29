@@ -1,3 +1,6 @@
+Noets from instructor here:
+https://canvas.instructure.com/courses/790528/quizzes/768810
+
 Print out any month between 1800-3000
 
 like command "cal" in unix
@@ -30,7 +33,14 @@ asseert_equal(`cal 2 2012, `ruby cal.rb 2 2012`)
 Step 2)
 Submit link to integration tests in Canvas
 
-TaskList:
+Step 3)
+Implement a method with tests
+
+Step 4)
+Commit and Submit a link to Canvas
+
+TaskList (write tests for these):
 - Method to, format the Header (month and year)
 - Method to, returns days of the week
-- Method to, 
+- Method to, return start day, (Zeller's Congruence)
+- Method to, format month (print string of days with \n (new lines) in it
