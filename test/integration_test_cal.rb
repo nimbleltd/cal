@@ -1,5 +1,5 @@
 require 'test/unit'
-require './cal'
+require './ruby_cal'
 
 class MakeCalTest < Test::Unit::TestCase
 
