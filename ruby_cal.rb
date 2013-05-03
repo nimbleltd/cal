@@ -75,7 +75,11 @@ class MakeCal
   # def print_numbered_days
 
   # end
-
+def get_month_list get_first_day_index = false
+    month_list = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    month_list = month_list.rotate!(2) if get_first_day_index
+    month_list
+  end # get_month_list method
 
 # Formula to determine the first day of the month
 #================================================
@@ -87,13 +91,21 @@ class MakeCal
   def first_day_of_the_month
     day_of_month = 1
     month = @month
+    # puts @month
     year = @year
     #convert month and year
-    month = (month += 9) % 12
-    year -= month / 10
+    # month = ((month + 9) % 12)+3
+    # puts month
+    # month = 7
+    # year = year - (month / 10)
+    if month == 1 or month == 2
+      month = month + 12
+      year = year -1
+    end
     #1st day of the month
-    (day_of_month + ((month + 1) * 26 / 10) + year + (year / 4) + 6 * (year / 100) + (year / 400)) % 7
+    (((month + 1) * 26 / 10).floor + year + (year / 4).floor + 6 * (year / 100).floor + (year / 400).floor) % 7
   end
+
 
   def number_of_days_in_the_month
     thirty_days = [4,6,9,11]
@@ -341,6 +353,8 @@ class MakeCal
       row05_nums = ""
       while i < 4
         mike = MakeCal.new i, @year
+        puts "month = #{i}"
+        puts "mike.generate_week05.size = #{mike.generate_week05.size}"
         bill = mike.generate_week05.size
         if bill < 20
           right_padding = (20 - bill)
@@ -350,7 +364,11 @@ class MakeCal
             right_padding = right_padding-1
           end
         i += 1
-        row05_nums << mike.generate_week05 << padding << "  "
+        elsif bill == 20
+          puts "bill == 20"
+          padding = ""
+          row05_nums << mike.generate_week05 << padding << "  "
+        i += 1
         else
           row05_nums << mike.generate_week05 << "  "
         i += 1
