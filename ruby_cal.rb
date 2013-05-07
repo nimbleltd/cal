@@ -1,3 +1,4 @@
+require 'pry'
 class MakeCal
   attr_accessor :month
   attr_accessor :year
@@ -53,12 +54,8 @@ class MakeCal
 
 # 20 spaces are available to center the month and year on
   def how_many_spaces_do_I_need
-    # return 0 if what_month_is_it_longName.nil?
     total_chars_in_header = (what_month_is_it_longName.size + 5)
-    # print "\n @month = #{what_month_is_it_longName.size}, @year.to_s.size.to_i = #{@year.to_s.size.to_i}"
-    # print "\n total_chars_in_header = #{total_chars_in_header}"
     spaces_before_month_name = ((20 - total_chars_in_header)/2)
-    # print "\n spaces_before_month_name = #{spaces_before_month_name}."
     i = 1
     spacenum = ""
     while i <= spaces_before_month_name
@@ -268,6 +265,8 @@ def get_month_list get_first_day_index = false
       end
       week_05_array = (first_num_fifth_week..last_num_fifth_week).to_a
       week_05 = week_05_array.join(' ')
+    else
+      " " * 20
     end
   end
 
@@ -275,7 +274,7 @@ def get_month_list get_first_day_index = false
     # print "\n#{generate_week05.split()[-1]} == #{number_of_days_in_the_month}"
     if generate_week05.split()[-1].to_i == number_of_days_in_the_month.to_i
       return 0 #"                    "
-    elsif generate_week05.split()[-1] != number_of_days_in_the_month
+    elsif !generate_week05.split()[-1].nil? && generate_week05.split()[-1] != number_of_days_in_the_month
       last_day_in_week05 = generate_week05.split()[-1]
       # print "\nlast_day_in_week05 = #{last_day_in_week05}"
       first_num_sixth_week = last_day_in_week05.to_i + 1
@@ -291,6 +290,8 @@ def get_month_list get_first_day_index = false
          mike = week_06_array[0].to_s.split()
          week_06 = "#{mike[0]}#{mike[1]}"
       end
+    else
+      week_06 = " " * 20
     end
     week_06
   end
@@ -313,68 +314,36 @@ def get_month_list get_first_day_index = false
     month_header_10_of_12 = "      October               November              December\n"
     # q = 1
     # while q < 7
-      i = 1
-      row01_nums = ""
-      while i < 4
-        mike = MakeCal.new i, @year
-        row01_nums << mike.generate_week01 << "  "
-        i += 1
+    #
+    row_nums_1to3 = ""
+    1.upto(4) do |week|
+      1.upto(3) do |month|
+        mike = MakeCal.new month, @year
+        row_nums_1to3 << mike.send("generate_week0#{week}".to_sym)
+        row_nums_1to3 << "  " unless month == 3
       end
-      row01_nums << "\n"
-
-      i = 1
-      row02_nums = ""
-      while i < 4
-        mike = MakeCal.new i, @year
-        row02_nums << mike.generate_week02 << "  "
-        i += 1
-      end
-      row02_nums << "\n"
-
-      i = 1
-      row03_nums = ""
-      while i < 4
-        mike = MakeCal.new i, @year
-        row03_nums << mike.generate_week03 << "  "
-        i += 1
-      end
-      row03_nums << "\n"
-
-      i = 1
-      row04_nums = ""
-      while i < 4
-        mike = MakeCal.new i, @year
-        row04_nums << mike.generate_week04 << "  "
-        i += 1
-      end
-      row04_nums << "\n"
+      row_nums_1to3 << "\n"
+    end
 
       i = 1
       row05_nums = ""
       while i < 4
         mike = MakeCal.new i, @year
-        puts "month = #{i}"
-        puts "mike.generate_week05.size = #{mike.generate_week05.size}"
         bill = mike.generate_week05.size
         if bill < 20
-          right_padding = (20 - bill)
-          padding = ""
-          while right_padding > 0
-            padding = padding + " "
-            right_padding = right_padding-1
-          end
-        i += 1
-        elsif bill == 20
-          puts "bill == 20"
-          padding = ""
+          padding = " " * (20 - bill)
           row05_nums << mike.generate_week05 << padding << "  "
-        i += 1
+          i += 1
+        elsif bill == 20
+          row05_nums << mike.generate_week05 << "  "
+          i += 1
         else
           row05_nums << mike.generate_week05 << "  "
-        i += 1
+          i += 1
         end
       end
       row05_nums << "\n"
+      # binding.pry
 
       i = 1
       row06_nums = ""
@@ -388,11 +357,18 @@ def get_month_list get_first_day_index = false
             padding = padding + " "
             right_padding = right_padding-1
           end
+          # binding.pry
         i += 1
-        row06_nums << mike.generate_week06 << padding << "  "
+        row06_nums << mike.generate_week06 << padding #<< "a  "
         elsif bill == 1
-          row06_nums << mike.generate_week06 << "                    " << "  "
-          i += 1
+          if mike.generate_week06 != 0
+            print "\nmike.generate_week06 = #{mike.generate_week06}"
+            row06_nums << mike.generate_week06 << "                    " << "  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row06_nums << "                    " << "  "
+            i += 1
+          end
         else
           row06_nums << mike.generate_week06 << "  "
           i += 1
@@ -401,45 +377,23 @@ def get_month_list get_first_day_index = false
       if row06_nums.rstrip == ""
           row06_nums = "                                            "
       end
+      if i == 4 and mike.generate_week06 != 0
+        row06_nums = row06_nums.rstrip
+      end
       row06_nums << "\n"
 
       # 4-6 #####################
       ###########################
-      i = 4
-      row07_nums = ""
-      while i < 7
-        mike = MakeCal.new i, @year
-        row07_nums << mike.generate_week01 << "  "
-        i += 1
-      end
-      row07_nums << "\n"
 
-      i = 4
-      row08_nums = ""
-      while i < 7
-        mike = MakeCal.new i, @year
-        row08_nums << mike.generate_week02 << "  "
-        i += 1
+    row_nums_7to10 = ""
+    1.upto(4) do |week|
+      4.upto(6) do |month|
+        mike = MakeCal.new month, @year
+        row_nums_7to10 << mike.send("generate_week0#{week}".to_sym)
+        row_nums_7to10 << "  " unless month == 3
       end
-      row08_nums << "\n"
-
-      i = 4
-      row09_nums = ""
-      while i < 7
-        mike = MakeCal.new i, @year
-        row09_nums << mike.generate_week03 << "  "
-        i += 1
-      end
-      row09_nums << "\n"
-
-      i = 4
-      row10_nums = ""
-      while i < 7
-        mike = MakeCal.new i, @year
-        row10_nums << mike.generate_week04 << "  "
-        i += 1
-      end
-      row10_nums << "\n"
+      row_nums_7to10 << "\n"
+    end
 
       i = 4
       row11_nums = ""
@@ -475,10 +429,22 @@ def get_month_list get_first_day_index = false
             right_padding = right_padding-1
           end
         i += 1
-        row12_nums << mike.generate_week06 << padding << "  "
+        if mike.generate_week06 != 0
+            row12_nums << mike.generate_week06 << "                    " << "  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row12_nums << "                    " << "  "
+            i += 1
+          end
+        # row12_nums << mike.generate_week06 << padding << "  "
         elsif bill == 1
-          row12_nums << mike.generate_week06 << "                    " << "  "
-          i += 1
+          if mike.generate_week06 != 0
+            row12_nums << mike.generate_week06 << "                    " << "  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row12_nums << "                    " << "  "
+            i += 1
+          end
         else
           row12_nums << mike.generate_week06 << "  "
           i += 1
@@ -491,41 +457,16 @@ def get_month_list get_first_day_index = false
 
       # 7-9 #####################
       ###########################
-      i = 7
-      row13_nums = ""
-      while i < 10
-        mike = MakeCal.new i, @year
-        row13_nums << mike.generate_week01 << "  "
-        i += 1
-      end
-      row13_nums << "\n"
 
-      i = 7
-      row14_nums = ""
-      while i < 10
-        mike = MakeCal.new i, @year
-        row14_nums << mike.generate_week02 << "  "
-        i += 1
+    row_nums_13to16 = ""
+    1.upto(4) do |week|
+      7.upto(9) do |month|
+        mike = MakeCal.new month, @year
+        row_nums_13to16 << mike.send("generate_week0#{week}".to_sym)
+        row_nums_13to16 << "  " unless month == 3
       end
-      row14_nums << "\n"
-
-      i = 7
-      row15_nums = ""
-      while i < 10
-        mike = MakeCal.new i, @year
-        row15_nums << mike.generate_week03 << "  "
-        i += 1
-      end
-      row15_nums << "\n"
-
-      i = 7
-      row16_nums = ""
-      while i < 10
-        mike = MakeCal.new i, @year
-        row16_nums << mike.generate_week04 << "  "
-        i += 1
-      end
-      row16_nums << "\n"
+      row_nums_13to16 << "\n"
+    end
 
       i = 7
       row17_nums = ""
@@ -548,7 +489,7 @@ def get_month_list get_first_day_index = false
       end
       row17_nums << "\n"
 
-      i = 7
+     i = 7
       row18_nums = ""
       while i < 10
         mike = MakeCal.new i, @year
@@ -561,54 +502,44 @@ def get_month_list get_first_day_index = false
             right_padding = right_padding-1
           end
         i += 1
-        row18_nums << mike.generate_week06 << padding << "  "
+        if mike.generate_week06 != 0
+            row18_nums << mike.generate_week06 << "                    " #<< "a  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row18_nums << "                    " << "  "
+            i += 1
+          end
+        # row12_nums << mike.generate_week06 << padding << "  "
         elsif bill == 1
-          row18_nums << mike.generate_week06 << "                    " << "  "
-          i += 1
+          if mike.generate_week06 != 0
+            row18_nums << mike.generate_week06 << "                    " << "  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row18_nums << "                    " << "  "
+            i += 1
+          end
         else
           row18_nums << mike.generate_week06 << "  "
           i += 1
         end
       end
-      row18_nums << "\n"
+      if row18_nums.rstrip == ""
+          row18_nums = "                                            "
+      end
+      row18_nums #<< "\n"
 
       # 10-12 #####################
       #############################
-      i = 10
-      row19_nums = ""
-      while i < 13
-        mike = MakeCal.new i, @year
-        row19_nums << mike.generate_week01 << "  "
-        i += 1
-      end
-      row19_nums << "\n"
 
-      i = 10
-      row20_nums = ""
-      while i < 13
-        mike = MakeCal.new i, @year
-        row20_nums << mike.generate_week02 << "  "
-        i += 1
+    row_nums_19to22 = ""
+    1.upto(4) do |week|
+      10.upto(12) do |month|
+        mike = MakeCal.new month, @year
+        row_nums_19to22 << mike.send("generate_week0#{week}".to_sym)
+        row_nums_19to22 << "  " unless month == 3
       end
-      row20_nums << "\n"
-
-      i = 10
-      row21_nums = ""
-      while i < 13
-        mike = MakeCal.new i, @year
-        row21_nums << mike.generate_week03 << "  "
-        i += 1
-      end
-      row21_nums << "\n"
-
-      i = 10
-      row22_nums = ""
-      while i < 13
-        mike = MakeCal.new i, @year
-        row22_nums << mike.generate_week04 << "  "
-        i += 1
-      end
-      row22_nums << "\n"
+      row_nums_19to22 << "\n"
+    end
 
       i = 10
       row23_nums = ""
@@ -631,7 +562,7 @@ def get_month_list get_first_day_index = false
       end
       row23_nums << "\n"
 
-      i = 10
+     i = 10
       row24_nums = ""
       while i < 13
         mike = MakeCal.new i, @year
@@ -644,18 +575,34 @@ def get_month_list get_first_day_index = false
             right_padding = right_padding-1
           end
         i += 1
-        row24_nums << mike.generate_week06 << padding << "  "
+        if mike.generate_week06 != 0
+            row24_nums << mike.generate_week06 << "                    " #<< "a  "
+            i += 1
+          elsif mike.generate_week06 == 0
+            row24_nums << "                    " << "  "
+            i += 1
+          end
+        # row12_nums << mike.generate_week06 << padding << "  "
         elsif bill == 1
-          row24_nums << mike.generate_week06 << "                    " << "  "
-          i += 1
+          if mike.generate_week06 != 0
+            row24_nums << mike.generate_week06 << "                    " << "  "
+
+            i += 1
+          elsif mike.generate_week06 == 0
+            row24_nums << "                    " << "  "
+            i += 1
+          end
         else
           row24_nums << mike.generate_week06 << "  "
           i += 1
         end
       end
+      # if row24_nums.rstrip == ""
+      #     row24_nums = "f                                            "
+      # end
       row24_nums << "\n"
 
-    return "#{whole_year}#{month_header_01_of_03}#{days_header}\n#{row01_nums.rstrip}\n#{row02_nums.rstrip}\n#{row03_nums.rstrip}\n#{row04_nums.rstrip}\n#{row05_nums.rstrip}\n#{row06_nums}#{month_header_04_of_06}#{days_header}\n#{row07_nums.rstrip}\n#{row08_nums.rstrip}\n#{row09_nums.rstrip}\n#{row10_nums.rstrip}\n#{row11_nums.rstrip}\n#{row12_nums}#{month_header_07_of_09}#{days_header}\n#{row13_nums.rstrip}\n#{row14_nums.rstrip}\n#{row15_nums.rstrip}\n#{row16_nums.rstrip}\n#{row17_nums.rstrip}\n#{row18_nums.rstrip}\n#{month_header_10_of_12}#{days_header.rstrip}\n#{row19_nums.rstrip}\n#{row20_nums.rstrip}\n#{row21_nums.rstrip}\n#{row22_nums.rstrip}\n#{row23_nums.rstrip}\n#{row24_nums.rstrip}"
+    return "#{whole_year}#{month_header_01_of_03}#{days_header}\n#{row_nums_1to3}#{row05_nums.rstrip}\n#{row06_nums}#{month_header_04_of_06}#{days_header}\n#{row_nums_7to10}#{row11_nums.rstrip}\n#{row12_nums}#{month_header_07_of_09}#{days_header}\n#{row_nums_13to16}#{row17_nums.rstrip}\n#{row18_nums}\n#{month_header_10_of_12}#{days_header.rstrip}\n#{row_nums_19to22}#{row23_nums.rstrip}\n#{row24_nums}"
   end
 
 end

@@ -4,7 +4,7 @@ require './ruby_cal'
 class MakeAnualCalTest < Test::Unit::TestCase
 
   def test_01_header_check
-    argRequest = `cal 1804`
+    argRequest = `cal 2011`
     week00_cal = argRequest.split( /\r?\n/ )[0]
     week01_cal = argRequest.split( /\r?\n/ )[1]
     week02_cal = argRequest.split( /\r?\n/ )[2]
@@ -30,8 +30,16 @@ class MakeAnualCalTest < Test::Unit::TestCase
     week22_cal = argRequest.split( /\r?\n/ )[22]
     week23_cal = argRequest.split( /\r?\n/ )[23]
     week24_cal = argRequest.split( /\r?\n/ )[24]
+    week25_cal = argRequest.split( /\r?\n/ )[25]
+    week26_cal = argRequest.split( /\r?\n/ )[26]
+    week27_cal = argRequest.split( /\r?\n/ )[27]
+    week28_cal = argRequest.split( /\r?\n/ )[28]
+    week29_cal = argRequest.split( /\r?\n/ )[29]
+    week30_cal = argRequest.split( /\r?\n/ )[30]
+    week31_cal = argRequest.split( /\r?\n/ )[31]
+    week32_cal = argRequest.split( /\r?\n/ )[32]
 
-    willy = MakeCal.new(9, 1804)
+    willy = MakeCal.new(9, 2011)
     sally00 = willy.deliver_whole_year.split( /\r?\n/ )[0]
     sally01 = willy.deliver_whole_year.split( /\r?\n/ )[1]
     sally02 = willy.deliver_whole_year.split( /\r?\n/ )[2]
@@ -57,7 +65,14 @@ class MakeAnualCalTest < Test::Unit::TestCase
     sally22 = willy.deliver_whole_year.split( /\r?\n/ )[22]
     sally23 = willy.deliver_whole_year.split( /\r?\n/ )[23]
     sally24 = willy.deliver_whole_year.split( /\r?\n/ )[24]
-
+    sally25 = willy.deliver_whole_year.split( /\r?\n/ )[25]
+    sally26 = willy.deliver_whole_year.split( /\r?\n/ )[26]
+    sally27 = willy.deliver_whole_year.split( /\r?\n/ )[27]
+    sally28 = willy.deliver_whole_year.split( /\r?\n/ )[28]
+    sally29 = willy.deliver_whole_year.split( /\r?\n/ )[29]
+    sally30 = willy.deliver_whole_year.split( /\r?\n/ )[30]
+    sally31 = willy.deliver_whole_year.split( /\r?\n/ )[31]
+    sally32 = willy.deliver_whole_year.split( /\r?\n/ )[32]
 
     assert_equal(week00_cal,sally00)
     assert_equal(week01_cal,sally01)
@@ -84,7 +99,14 @@ class MakeAnualCalTest < Test::Unit::TestCase
     assert_equal(week22_cal,sally22)
     assert_equal(week23_cal,sally23)
     assert_equal(week24_cal,sally24)
-   	# assert_equal(`cal 1804`, `ruby cal.rb 1804`)
+    assert_equal(week25_cal,sally25)
+    assert_equal(week26_cal,sally26)
+    assert_equal(week27_cal,sally27)
+    assert_equal(week28_cal,sally28)
+    assert_equal(week29_cal,sally29)
+    assert_equal(week30_cal,sally30)
+    assert_equal(week31_cal,sally31)
+    assert_equal(week32_cal,sally32)
     #true this is a leap year
   end
 
